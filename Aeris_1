@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Aeris Maps - Aeris.js Demo</title>
+  
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.css"/>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.2/leaflet.js"></script>
+
+  <script type="text/javascript" src="https://cdn.aerisjs.com/aeris.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  
+  <style>
+    #map-canvas {
+      width: 1200px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <div id="map-canvas"></div>
+  
+  <script type="text/javascript">
+    // Configure Aeris API keys
+    aeris.config.set({
+      apiId: 'DOTnglFhezbtnVtxC2NlI',
+      apiSecret: 'uLbiIyumBLBL5wWaLdRxGdoy2nMW3A48KpXdNPNG'
+    });
+    
+    // Create the map, where 'map-canvas' is the id of an HTML element.
+    var map = new aeris.maps.Map('map-canvas', {
+      zoom: 7,
+      center: [34.5859,-79.8486],
+      baseLayer: new aeris.maps.layers.AerisTile({
+        tileType: 'flat',
+        zIndex: 1
+      })
+    });
+    
+    // Create 'radar' layer
+    var radar = new aeris.maps.layers.AerisTile({
+      tileType: 'radar',
+      opacity: 0.9,
+      zIndex: 5,
+      map: map
+    });
+
+    // Create 'counties' layer
+    var counties = new aeris.maps.layers.AerisTile({
+      tileType: 'counties',
+      zIndex: 7,
+      map: map
+    });
+
+    // Create 'admin-cities' layer
+    var adminCities = new aeris.maps.layers.AerisTile({
+      tileType: 'admin-cities',
+      zIndex: 9,
+      map: map
+    });
+    
+    // Create the animation
+    // See https://github.com/aerisweather/aerisjs/blob/master/examples/animations/sync.html
+    // for a more complete usage demonstration
+    var animation = new aeris.maps.animations.AnimationSync([
+      radar
+    ], {
+      from: Date.now() - 1000 * 60 * 60 * 2,    // 2 hours ago
+      to: Date.now()
+    });
+    
+    // Start the animation
+    animation.start();
+  </script>
+</body>
+</html>
